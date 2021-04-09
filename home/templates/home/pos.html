@@ -1,0 +1,364 @@
+{% extends 'home/basic.html' %}
+
+{% load static %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+
+{% block head %}
+
+{% endblock %}
+
+
+{% block js %}
+
+  <style>
+    .raisedbox { 
+        -webkit-box-shadow: 3px 3px 5px 6px #ccc;  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+        -moz-box-shadow:    3px 3px 5px 6px #ccc;  /* Firefox 3.5 - 3.6 */
+        box-shadow:         3px 3px 5px 6px #ccc;
+        width: 150px;
+    }
+      
+    #brand_table{
+        background-color: #7f8c8d;
+        color: white;
+        display: block;
+        position: absolute;
+        border: 3px solid #f1f1f1;
+        right: 50%;
+      }
+</style>
+
+<script>
+    var pos_select_dict = {};
+    var my_count = 0
+    function pos_submit() {
+        localStorage["pos_select_dict"] = JSON.stringify(pos_select_dict);
+        localStorage['pos_recc'] = JSON.stringify(pos_detail)                
+    }
+    
+    
+    
+
+</script>
+        
+{% endblock %}
+
+
+{% block body %}
+   
+            <div class="page-inner">
+                <div class="page-title">
+                    <h3>Point of Sales </h3>
+                    <div class="page-breadcrumb">
+                        <ol class="breadcrumb">
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="#">Finance</a></li>
+                            <li class="active">Point of Sales</li>
+                        </ol>
+                        <div class="col-md-12 col-md-6" style="float: right;">
+                        <div class="">
+                            <form class="search-formm" id="pos_search" action="#" method="GET">
+                                <div class="input-group">
+                                    <input type="text" id="search_box" name="search" class="form-control search-input" placeholder="Search brand Name..">
+                                    
+                                </div><!-- Input Group -->
+                            </form><!-- Search Form -->
+                        </div>
+                    </div>
+                    </div>
+                    
+                </div>
+                
+                <div id="main-wrapper">
+                    <div class="row">
+                        
+                        <div class="col-md-12">
+                            
+                            <div class="panel panel-white">
+                                <div class="panel-body">
+                                    
+                                    <form class="form-horizontal" method="post">
+                                        {% csrf_token %}
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-12" style="float: inherit">Select Item</label>
+                                                <div class="col-md-12" style="float: left;">
+                                                    <div class="">
+                                                        <form class="" id="pmeddisplaysearch" action="#" method="GET">
+                                                            <div class="input-group">
+                                                                <input type="text" id="medsearch" name="search" class="form-control search-input" placeholder="Search...">
+                                                            </div><!-- Input Group -->
+                                                        </form><!-- Search Form -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            
+                                            
+                                            <div class="form-group">
+
+                                                <div class="col-md-3" id="main_medpos">
+                                                    <select id="id_med_select" class="form-control m-b-sm" size=18>
+                                                      {% for med in my_meds %}
+                                                            <option value="{{ med }}" data-medprice="{{ med.selling_price }}" data-medcompany="{{ med.company }}" data-medstock="{{ med.quantity_left }}" data-genname="{{ med.generic_name }}" data-medcat="{{ med.category }}">{{ med }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <select id="pos_selected" class="form-control m-b-sm" size=18>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="col-sm-2" id="selected_item_details">
+                                                    <div class="form-group raisedbox" style="margin-right:15px; margin-left:15px">
+                                                        <p>Selected Items</p>
+                                                    </div>
+                                                    
+                                                </div> 
+                                                <div class="panel-body" id="brand_table">
+                                                   <div class="table-responsive">
+                                                    <table id="pos_brand_id" class="display table" style="width: 100%; cellspacing: 0;">
+                                                        <thead>
+                                                            <tr>
+                                                                
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for med in my_meds %}
+                                                            <tr>
+                                                                <td>{{ med.generic_name }}</td>
+                                                                <td>Name: {{ med.name }} </td>
+                                                                <td>Company: {{ med.company }} </td>
+                                                                <td>Qty: {{ med.quantity_left }} </td>
+                                                                <td>Price: {{ med.selling_price }} </td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                        <button type="button" onclick="close_tab()" style="background-color: blueviolet">Close</button>
+                                                       </table>
+                                                    </div>
+
+                                                </div>
+                                                <input id="my_count" type="hidden" name="my_count" value=0>
+                                                <!--Cost calculations and discount-->
+                                                <!--To be concluded with the python logic-->
+                                                <div class="col-sm-3" id="pos_item_cal">
+                                                    <div class="form-group">
+                                                            <div class="row">
+                                                                <label for="inputPassword3" class="col-sm-6 control-label">Sub Total</label>
+                                                                <div class="col-sm-6">
+                                                                    <input type="text" name="sub_total" readonly class="form-control" id="pos_sub" value=0>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row" style="margin-top:10px">
+                                                                <label for="inputPassword4" class="col-sm-6 control-label">Discount</label>
+                                                                <div class="col-sm-6">
+                                                                    <input type="text" name="discount" class="form-control" onkeyup="" id="pos_disc" value=0>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row" style="margin-top:10px">
+                                                                <label for="inputPassword5" class="col-sm-6 control-label">Gross Total</label>
+                                                                <div class="col-sm-6">
+                                                                    <input type="text" name="grand_total" readonly class="form-control" id="pos_gross" value=0>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group" style="margin-top:20px">
+                                                                <div class="col-sm-offset-9 col-sm-9">
+                                                                    <button type="submit" onclick="pos_submit()" class="btn btn-success">Submit</button>
+                                                                </div>
+                                                            </div>
+                                                        {{ saleformset.management_form }}
+                                                    </div>
+                                                </div>
+                                                {{ form.user | add_class:"css_class" | attr:"placeholder:user" }}
+                                            </div>
+                                        </div>
+                                    </form>
+                                    
+                                    <script>
+                                        
+                                        var selpos = document.getElementById('id_med_select');
+                                        var seledpos = document.getElementById('pos_selected');
+                                        
+                                    
+                                        $("#id_med_select").change(function() {
+                                            var opt = document.createElement('option');
+                                            var mycount = document.getElementById('my_count').value 
+                                            mycount += 1
+                                            var medcompany = selpos.options[selpos.selectedIndex].getAttribute("data-medcompany");
+                                            var medstock = selpos.options[selpos.selectedIndex].getAttribute("data-medstock");
+                                            var medprice = selpos.options[selpos.selectedIndex].getAttribute("data-medprice");
+                                            var genname = selpos.options[selpos.selectedIndex].getAttribute("data-genname");
+                                            var medcat = selpos.options[selpos.selectedIndex].getAttribute("data-medcat");
+                                            //alert(medcompany)
+                                            opt.value = selpos.value;
+                                            opt.innerHTML = selpos.value;
+                                            medid = opt.value.replace(/[^A-Z0-9]/ig, '');
+                                            var newelem = '<option data-medprice="'+ medprice +'" data-medcompany="'+medcompany+'" data-medstock="'+medstock+'" data-genname="'+genname+'" data-medcat="'+medcat+'" >'+selpos.value+'</option>'
+                                            //seledpos.appendChild(opt);
+                                            $('#pos_selected').append(newelem)
+                                            var mycost = parseFloat(1)*parseFloat(medprice)
+                                            var elmm = '<div class="form-group raisedbox" style="margin-right:45px; margin-left:15px" id="' + medid + '"><p>Name: ' + opt.value + '</p><p>Generic Name: ' + genname + '</p><p>Company: '+medcompany+'</p><p>Price: '+medprice+'</p><p>Current Stock:'+medstock+'</p><label class="" style="width:25%">Qty</label><input name="form-'+Object.keys(pos_select_dict).length+'-quantity_sold" type="text" style="width:75%" id="id_'+opt.value+'_qty" value=1 onkeyup="med_qty_input(this)" required><input type="hidden" name="form-'+Object.keys(pos_select_dict).length+'-category" value="'+medcat+'"><input type="hidden" name="form-'+Object.keys(pos_select_dict).length+'-medicine" value="'+opt.value+'"><input type="hidden" name="form-'+Object.keys(pos_select_dict).length+'-price" value="'+medprice+'"><input id="'+selpos.value+'_cost" type="hidden" name="form-'+Object.keys(pos_select_dict).length+'-cost" value="'+medprice+'"></div>';
+                                            $('#selected_item_details').append(elmm)
+                                            pos_select_dict[selpos.value] = {}
+                                            //pos_select_dict[selpos.value]['numb'] = my_med[opt.value].numb;
+                                            pos_select_dict[selpos.value]['price'] = medprice;
+                                            pos_select_dict[selpos.value]['qty'] = document.getElementById('id_'+opt.value+'_qty').value; 
+                                            pos_select_dict[selpos.value].cost = parseFloat(pos_select_dict[selpos.value].qty)*parseFloat(pos_select_dict[selpos.value].price)
+                                            document.getElementById('pos_sub').value = parseFloat(document.getElementById('pos_sub').value) + parseFloat(pos_select_dict[selpos.value].cost)
+                                            pos_select_dict[selpos.value]['category'] = medcat;
+                                            pos_select_dict[selpos.value]['qty_left'] = medstock;
+                                            var countSelected = $(this).find("option:selected");
+                                            countSelected.remove(); 
+                                            
+                                        });
+                                        
+                                        function med_qty_input(e){
+                                            if (e.value < 0){
+                                                alert('Not a valid input')
+                                            }else{
+                                                var pos_sub = 0;
+                                                var pos_disc = 0;
+                                                var pos_gross = 0;
+                                                var pos_discount = document.getElementById('pos_disc').value
+                                                
+                                                for (let mm in pos_select_dict){
+                                                    if ('id_'+mm+'_qty' == e.id ){
+                                                        if (e.value <= parseFloat(pos_select_dict[mm].qty_left)) {
+                                                        pos_select_dict[mm].qty = e.value;
+                                                        pos_select_dict[mm].cost = parseFloat(pos_select_dict[mm].qty)*parseFloat(pos_select_dict[mm].price)
+                                                        document.getElementById(mm+'_cost').value = pos_select_dict[mm].cost
+                                                        
+                                                        
+                                                    }else{
+                                                        alert("Not enough Quantity")
+                                                    }
+                                                     
+                                                    }
+                                                    pos_sub += parseFloat(pos_select_dict[mm].cost)   
+                                                }
+                                                document.getElementById('pos_sub').value = pos_sub;
+                                                pos_gross = parseFloat(pos_sub)-parseFloat(pos_discount);
+                                                document.getElementById('pos_gross').value = pos_gross;
+                                                console.log(pos_sub)
+                                                
+                                            }
+                                            
+                                        }
+                                        
+                                        $("#pos_selected").change(function() {
+                                            var mycount = document.getElementById('my_count').value 
+                                            mycount -= 1
+                                            var pos_discount = document.getElementById('pos_disc').value;
+                                            var mmedcompany = seledpos.options[seledpos.selectedIndex].getAttribute("data-medcompany");
+                                            var mmedstock = seledpos.options[seledpos.selectedIndex].getAttribute("data-medstock");
+                                            var mmedprice = seledpos.options[seledpos.selectedIndex].getAttribute("data-medprice");
+                                            var mgenname = seledpos.options[seledpos.selectedIndex].getAttribute("data-genname");
+                                            var mmedcat = seledpos.options[seledpos.selectedIndex].getAttribute("data-medcat");
+                                            var optt = document.createElement('option');
+                                            optt.value = seledpos.value;
+                                            optt.innerHTML = seledpos.value;
+                                            var neleme = '<option data-medprice="'+ mmedprice +'" data-medcompany="'+mmedcompany+'" data-medstock="'+mmedstock+'" data-genname="'+mgenname+'" data-medcat="'+mmedcat+'" >'+seledpos.value+'</option>'
+                                            //selpos.appendChild(optt);
+                                            $('#id_med_select').append(neleme)
+                                            pos_sub -= parseFloat(pos_select_dict[seledpos.value].cost);
+                                            document.getElementById('pos_sub').value = pos_sub;
+                                            pos_gross = parseFloat(pos_sub)-parseFloat(pos_discount);
+                                            document.getElementById('pos_gross').value = pos_gross;
+                                            meddid = optt.value.replace(/[^A-Z0-9]/ig, '');
+                                            document.querySelector('#selected_item_details').querySelector('#'+meddid).remove();
+                                            delete pos_select_dict[optt.value]
+                                            var countSelect = $(this).find("option:selected");
+                                            countSelect.remove();
+                                                                                     
+                                        });
+                                        
+                                    </script>
+                                </div> 
+                                
+                            </div>
+                            
+                        </div>
+                    </div><!-- Row -->
+                
+ {% endblock %}
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+ {% block script %}
+<script>
+    const display_bodyy = document.querySelector('#id_med_select');
+        const itemn = document.getElementById('medsearch');
+        itemn.addEventListener('keyup', function(e){
+            const ter = e.target.value.toLowerCase();
+            const mepds = display_bodyy.options;
+            Array.from(mepds).forEach(function(mepd){
+                const branpd = mepd.textContent;
+                if (branpd.toLowerCase().indexOf(ter) != -1){
+                    mepd.style.display = "block";
+                }else{
+                    mepd.style.display = "none";
+                }
+                
+            })
+        })
+</script>
+                    
+<script>
+    const display_body = document.querySelector('#pos_brand_id tbody');
+        const itemm = document.getElementById('search_box');
+        itemm.addEventListener('keyup', function(e){
+            const term = e.target.value.toLowerCase();
+            const medds = display_body.getElementsByTagName('tr');
+            Array.from(medds).forEach(function(medd){
+                const brand = medd.firstElementChild.textContent;
+                if (brand.toLowerCase().indexOf(term) != -1){
+                    medd.style.display = "block";
+                }else{
+                    medd.style.display = "none";
+                }
+                document.getElementById('brand_table').style.display = "block"
+            })
+        })
+</script>               
+                    
+    
+        
+                    
+    <script>
+        document.getElementById('brand_table').style.display = "none"
+        function close_tab(){
+            document.getElementById('brand_table').style.display = "none"
+        }
+        document.getElementById('id_user').style.display = "none";
+        
+    </script>              
+                    
+  {% endblock %}
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    

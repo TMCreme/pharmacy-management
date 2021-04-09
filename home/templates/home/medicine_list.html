@@ -1,0 +1,168 @@
+{% extends 'home/basic.html' %}
+
+{% load static %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+
+
+{% block js %}
+<style>
+    #quantity_load_form {
+        display: none;
+        position: fixed;
+        top: 170px;
+        border: 3px solid #f1f1f1;
+        right: 30%;
+    }
+</style>
+
+<script>
+    var dt1 = new Date();
+    dt1.setDate(dt1.getDate()+50);
+    
+    function checkdate(my_date){
+        my_date = new Date(my_date)
+        if (my_date < dt1){
+            his_date = document.getElementById('date_'+my_date).textContent;
+            his_date.append('<span>&#x26A0;</span>');
+            console.log(his_date)
+        }
+    }
+    
+    
+    $( function(){
+        $('#id_expiry_date').datepicker();
+    })
+</script>
+<script>
+    function open_form(med){
+        document.getElementById('quantity_load_form').style.display = "block";
+        document.getElementById('quant_title').innerHTML = 'Load Quantity: '+med;
+        document.getElementById('med_name').value = med;
+    }
+    
+    function close_form(){
+        document.getElementById('quantity_load_form').style.display = "none";
+    }
+    function qsubmib(){
+        
+        alert(document.getElementById('quantity_input').getAttribute('name'))
+    }
+</script>
+{% endblock %}
+
+
+{% block body %}
+
+            <div class="page-inner">
+                <div class="page-title">
+                    <h3>Medicine List</h3>
+                    <div class="page-breadcrumb">
+                        <ol class="breadcrumb">
+                            <li><a href="index.html">Home</a></li>
+                            <li class="active">Medicine List</li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <div id="main-wrapper">
+                    <div class="row">
+                        
+                        <div class="col-lg-12">
+                            <div class="panel panel-white">
+                                <div class="panel-heading clearfix">
+                                    <h4 class="panel-title">Medicine List </h4>
+                                </div>
+                                <div class="panel-body">
+                                   <div class="table-responsive">
+                                    <table id="med_list_id" class="display table" style="width: 100%; cellspacing: 0;">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Name</th>
+                                                <th>Category</th>
+                                                <th>Purchase Price</th>
+                                                <th>Selling Price</th>
+                                                <th>Store Box</th>
+                                                <th>Quantity</th>
+                                                <th>Generic Name</th>
+                                                <th>Company</th>
+                                                <th>Side Effects</th>
+                                                <th>Expiry Date</th>
+                                                <th>Options</th>
+                                            </tr>
+                                        </thead>
+                                        <tfoot>
+                                        </tfoot>
+                                        <tbody>
+                                            {% for med in med_list %}
+                                            <tr>
+                                                <td>{{ med.id }}</td>
+                                                <td>{{ med.name }}</td>
+                                                <td>{{ med.category }}</td>
+                                                <td>{{ med.purchase_price }}</td>
+                                                <td>{{ med.selling_price }}</td>
+                                                <td>{{ med.store_box }}</td>
+                                                <td>
+                                                    {% if med.quantity_left < 15 %}
+                                                        <span>&#x26A0;</span>
+                                                    {% endif %}
+                                                    {{ med.quantity_left }} 
+                                                <a href="#" onclick="open_form('{{ med.name }}')" style="background-color: green">Load</a>
+                                                </td>
+                                                <td>{{ med.generic_name }}</td>
+                                                <td>{{ med.company }}</td>
+                                                <td>{{ med.side_effects }}</td>
+                                                <td>{{ med.expiry_date }}</td>
+                                                <td><a href="{% url 'home:edit-medicine' med.id %}"><button type="submit" class="btn btn-success">Edit</button></a></td>
+                                            </tr>
+                                            {% endfor %}
+                                            
+                                            <div class="form-group" id="quantity_load_form">
+                                                <form method="post" class="form-container">
+                                                    {% csrf_token %}
+                                                    <h4 id="quant_title">Load Quantity</h4>
+                                                    <input id="med_name" type="hidden" name="medicine">
+                                                    <input id="quantity_input" type="text" name="quantity">
+                                                    <input type="submit" class="btn btn-flat btn-primary ink-reaction" value="SUBMIT">
+                                                    <button type="button" class="btn btn-cancel" onclick="close_form()">Close</button>
+                                                </form>
+                                            </div>
+                                            
+                                        </tbody>
+                                       </table>  
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+{% endblock %}
+ 
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

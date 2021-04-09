@@ -1,0 +1,92 @@
+{% extends 'home/basic.html' %}
+
+{% load static %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+
+{% block head %}
+
+{% endblock %}
+
+
+{% block js %}
+
+{% endblock %}
+
+
+
+{% block body %}
+
+            <div class="page-inner">
+                <div class="page-title">
+                    <h3>Medicine Sales</h3>
+                    <div class="page-breadcrumb">
+                        <ol class="breadcrumb">
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="#">Medicine</a></li>
+                            <li class="active">All Sales</li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="col-sm-2" style="float: right; height: 5px">
+                            <form class="search-form" action="#" method="GET" style="height: 40px">
+                                <div class="input-group">
+                                    <input type="text" name="search" class="form-control search-input" placeholder="Search...">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default close-search waves-effect waves-button waves-classic" type="button"><i class="fa fa-times"></i></button>
+                                    </span>
+                                </div><!-- Input Group -->
+                            </form><!-- Search Form -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="main-wrapper">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-white">
+                                
+                                <div class="panel-body">
+                                   <div class="table-responsive">
+                                    <table id="allsales_table" class="display table" style="width: 100%; cellspacing: 0;">
+                                        <thead>
+                                            <tr>
+                                                <th>Invoice Id</th>
+                                                <th>Date</th>
+                                                <th>Sub Total</th>
+                                                <th>Discount</th>
+                                                <th>Grand Total</th>
+                                                <th>Dispenser</th>
+                                                <th>Options</th>
+                                            </tr>
+                                        </thead>
+                                        <tfoot>
+                                            {% for sale in allsales %}
+                                            <tr>
+                                                <td>{{ sale.id }}</td>
+                                                <td>{{ sale.date }} </td>
+                                                <td>{{ sale.sub_total }}</td>
+                                                <td>{{ sale.discount }} </td>
+                                                <td>{{ sale.grand_total }} </td>
+                                                <td>{{ sale.user }}</td>
+                                                <td><button type="submit" class="btn btn-success">Edit</button></td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tfoot>
+                                        <tbody>
+                                                                                  
+                                        </tbody>
+                                       </table>  
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div><!-- Row -->
+
+                    
+                    
+                    
+{% endblock %}

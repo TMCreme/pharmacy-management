@@ -1,0 +1,63 @@
+{% extends 'home/basic.html' %}
+
+{% load static %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+
+
+{% block body %}
+        
+            <div class="page-inner">
+                <div class="page-title">
+                    <h3>Edit Expense Category</h3>
+                    <div class="page-breadcrumb">
+                        <ol class="breadcrumb">
+                            <li><a href="index.html">Home</a></li>
+                            <li class="active">Edit Expense Category</li>
+                        </ol>
+                    </div>
+                </div>
+                <div id="main-wrapper">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="panel info-box panel-white">
+                                <div class="panel-body">
+                                    
+                                    <form method="POST" action="" class="" style="line-height: 20px; margin: 15px 15px 10px; width: 100%">
+                                        {% csrf_token %}
+                                        <div class="card-body">
+                                                <div class="col-lg-6">                                
+                                                    <div class="form-group floating-label">
+                                                        <label for="regular2">Category</label>
+                                                        {{ form.category | add_class:"css_class" | attr:"placeholder:Category" }}
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12">                                
+                                                    <div class="form-group floating-label">
+                                                        <label for="regular2">Description</label>
+                                                        {{ form.description | add_class:"css_class" | attr:"placeholder:Description" }}      
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="col-sm-12 align-center">
+                                                    <div class="col-md-12">
+                                                        <hr>
+                                                        <div class="card-actionbar-row">
+                                                            <input type="submit" class="btn btn-flat btn-primary ink-reaction" value="SUBMIT">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            
+                                        </div>
+                                    </form>                                    
+                                </div>
+                            </div>
+                        </div>
+                                                
+                    </div><!-- Row -->
+                    <div class="row">
+                                   
+                    </div>
+                </div><!-- Main Wrapper -->
+{% endblock %}

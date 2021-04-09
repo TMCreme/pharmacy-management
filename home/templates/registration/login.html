@@ -1,0 +1,17 @@
+
+{% block body %}
+
+
+        <form method="POST" action="." class="reg_form">
+            {% csrf_token %}
+            {{ form.username | add_class:"css_class" | attr:"placeholder:Username" }}<br/>
+            {{ form.password | add_class:"css_class" | attr:"placeholder:Password" }} <br/>   
+            <h2><button type="submit" >LOGIN</button></h2>
+
+        </form>
+    
+    
+
+
+{% endblock %}
+

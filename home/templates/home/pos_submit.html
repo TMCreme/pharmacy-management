@@ -1,0 +1,50 @@
+{% extends 'home/basic.html' %}
+
+{% load static %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+
+{% block head %}
+
+{% endblock %}
+
+
+{% block js %}
+
+
+        
+        <script>
+            
+        </script>
+
+{% endblock %}
+
+
+
+{% block body %}
+
+        
+ 
+            <div class="page-inner">
+                <div class="page-title">
+                    <h3>Sales Invoice</h3>
+                    <div class="page-breadcrumb">
+                        <ol class="breadcrumb">
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="#">Finance</a></li>
+                            <li class="active">Sales Invoice</li>
+                        </ol>
+                    </div>
+                </div>
+                <div id="main-wrapper">
+                    <div class="row" >
+                        <iframe style="float: right; width: 500px; height: 500px" src="{% url 'home:pdf-display' %}"></iframe>
+                    </div><!-- Row -->
+
+                    
+                    
+                    
+                    
+                    
+{% endblock %}
+        

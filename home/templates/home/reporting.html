@@ -1,0 +1,278 @@
+
+
+{% extends 'home/basic.html' %}
+
+{% load static %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+
+
+
+{% block js %}
+<script>
+    
+  $( function(){
+    $('.datepicker').datepicker();
+});
+    
+window.onload = function(){
+    data_dict = {{ data_dict | safe }}
+    summ_dict = {{ summ_dict | safe }}
+    exp_dict = {{ exp_dict | safe }}
+    tot_exp = {{ tot_exp | safe }}
+    profit = {{ profit |safe }}
+
+    console.log(data_dict)
+
+    for (let dat in data_dict){
+        var elemm = '<tr><td>'+dat+'</td><td>'+data_dict[dat].qty+'</td><td>'+parseFloat(data_dict[dat].purchase).toFixed(2)+'</td><td>'+parseFloat(data_dict[dat].selling).toFixed(2)+'</td></tr>'
+        $('#rep_details_table').append(elemm);
+    }
+    var salem = '<td></td><td>'+summ_dict.sub_purchase+'</td><td>'+summ_dict.sub_sale+'</td>'
+    $('#sub_total_id').append(salem)
+    var dislem = '<td></td><td></td><td>'+summ_dict.discount+'</td>'
+    $('#report_table2').append(dislem)
+    var grelem = '<td></td><td></td><td>'+summ_dict.gross_sale+'</td>'
+    $('#report_table4').append(grelem)
+    for (let mexp in exp_dict) {
+        var explem = '<tr><td>'+mexp+'</td><td>'+exp_dict[mexp]+'</td></tr>'
+        $('#report_expense1').append(explem)
+    }
+    $('#gross_purchase').append(summ_dict.sub_purchase)
+    $('#gross_selling').append(summ_dict.gross_sale)
+    $('#gross_expense').append(tot_exp)
+    $('#profit').append(parseFloat(profit).toFixed(2))
+    
+}
+
+
+</script>
+        
+{% endblock %}
+
+
+{% block body %}
+        
+        
+        
+   
+            <div class="page-inner">
+                <div class="page-title">
+                    <h3>Financial Report</h3>
+                    <div class="page-breadcrumb">
+                        <ol class="breadcrumb">
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="#">Finance</a></li>
+                            <li class="active">Financial Report</li>
+                        </ol>
+                    </div>
+                </div>
+                <div id="main-wrapper">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-white">
+                                <form method="post">
+                                    {% csrf_token %}
+                                <label for="date_from" style="width: 200px; float: left; margin: 0 20px 0 0;">
+                                    {{ form.date_from | add_class:"css_class" | attr:"placeholder:Date From" }}
+                                    <span style="display: block; margin: 0 0 3px; font-size: 1.2em; font-weight: bold;">Date From</span>
+                                </label>
+                                <label for="date_to" style="width: 200px; float: left; margin: 0 20px 0 0;">
+                                    {{ form.date_to | add_class:"css_class" | attr:"placeholder:Date To" }}
+                                    <span style="display: block; margin: 0 0 3px; font-size: 1.2em; font-weight: bold;">Date To</span>
+                                </label>
+                                <label for="submit" style="width: 100px; float: left; margin: 0 20px 0 0;">
+                                    <!--input type="button" style="width: 100px; padding: 5px" value="Submit" onclick="report_data()"-->
+                                    <button style="width: 100px; padding: 5px;" type="submit" class="btn btn-success">Submit</button>
+                                </label>  
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!--div class="row"-->
+                        <div class="col-lg-7">
+                            <div class="panel panel-white">
+                                <div class="panel-body">
+                                    <header class="panel-heading pan_head" style="color: #0a3d62; font-size: 16px;">
+                                        <i class="fa fa-money"></i>
+                                        Sales Report
+                                    </header>
+                                   <div class="table-responsive">
+                                    <table id="med_list_id" class="display table" style="width: 100%; cellspacing: 0;">
+                                        <thead>
+                                            <tr>
+                                                <th>Item Name</th>
+                                                <th>Quantity</th>
+                                                <th>Total Purchase Cost</th>
+                                                <th>Total Sales Cost</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="rep_details_table">
+                                            
+                                            
+                                        </tbody>
+                                        <tbody >
+                                            <tr id="sub_total_id">
+                                                <td>
+                                                    <h3>Sub Total</h3>
+                                                </td>                                            
+                                            </tr>
+                                            <tr id="report_table2">
+                                                <td>
+                                                    <h5>Total Discount</h5>
+                                                </td>
+                                            </tr>
+                                            <tr id="report_table4">
+                                                <td>
+                                                    <h5>Gross Sales</h5>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                       </table>  
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-white">
+                                <div class="panel-body">
+                                    <header class="panel-heading pan_head" style="color: #0a3d62; font-size: 16px;">
+                                        <i class="fa fa-money"></i>
+                                        Expense Report
+                                    </header>
+                                   <div class="table-responsive">
+                                    <table id="med_list_id" class="display table" style="width: 100%; cellspacing: 0;">
+                                        <thead>
+                                            <tr>
+                                                <th>Category</th>
+                                                <th>Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="report_expense1">
+                                            
+                                            
+                                        </tbody>
+                                        
+                                       </table>  
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+                        </div>
+                        <div class="col-lg-5">
+
+                            <header class="panel-heading pan_head" style="color: #0a3d62; font-size: 16px; ">
+                                <i class="fa fa-money"></i>
+                                Gross Report
+                            </header>
+
+                            <section class="panel" style="background-color: #22baa0; color: white; font-size: 16px">
+                                <div class="weather-bg">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-xs-4">
+                                                <i class="fa fa-money"></i>
+                                                Gross Purchase Price 
+                                            </div>
+                                            <div class="col-xs-8">
+                                                <div class="degree" id="gross_purchase">
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <section class="panel" style="background-color: #22baa0; color: white; font-size: 16px">
+                                <div class="weather-bg">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-xs-4">
+                                                <i class="fa fa-money"></i>
+                                                Gross Selling Price 
+                                            </div>
+                                            <div class="col-xs-8">
+                                                <div class="degree" id="gross_selling">
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <section class="panel" style="background-color: #22baa0; color: white; font-size: 16px">
+                                <div class="weather-bg">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-xs-4">
+                                                <i class="fa fa-money"></i>
+                                                Gross Expenses 
+                                            </div>
+                                            <div class="col-xs-8">
+                                                <div class="degree" id="gross_expense">
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <section class="panel" style="background-color: #22baa0; color: white; font-size: 16px">
+                                <div class="weather-bg">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-xs-4">
+                                                <i class="fa fa-money"></i>
+                                                Profit 
+                                            </div>
+                                            <div class="col-xs-8">
+                                                <div class="degree" id="profit">
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                        </div>
+                    <!--/div--><!-- Row -->
+ 
+
+                    
+                    
+                    
+                    
+                    
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

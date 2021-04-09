@@ -1,0 +1,77 @@
+
+
+{% extends 'home/basic.html' %}
+
+{% load static %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+
+
+
+{% block js %}
+
+{% endblock %}
+
+{% block body %}
+
+
+            <div class="page-inner">
+                <div class="page-title">
+                    <h3>Medicine Expire Alert</h3>
+                    <div class="page-breadcrumb">
+                        <ol class="breadcrumb">
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="#">Medicine</a></li>
+                            <li class="active">Expire Alert</li>
+                        </ol>
+                    </div>
+                </div>
+                <div id="main-wrapper">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-white">
+                                <div class="panel-body">
+                                   <div class="table-responsive">
+                                    <table id="expire_table" class="display table" style="width: 100%; cellspacing: 0;">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Name</th>
+                                                <th>Category</th>
+                                                <th>Purchase Prce</th>
+                                                <th>Selling Price</th>
+                                                <th>Store Box</th>
+                                                <th>Quantity</th>
+                                                <th>Generic Name</th>
+                                                <th>Company</th>
+                                                <th>Side Effects</th>
+                                                <th>Expiry Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tfoot>
+                                            {% for med in exp_medds %}
+                                            <tr>
+                                               <td>{{ med.id }}</td>
+                                                <td>{{ med.name }}</td>
+                                                <td>{{ med.category }}</td>
+                                                <td>{{ med.purchase_price }}</td>
+                                                <td>{{ med.selling_price }}</td>
+                                                <td>{{ med.store_box }}</td>
+                                                <td>{{ med.quantity_left }}</td>
+                                                <td>{{ med.generic_name }}</td>
+                                                <td>{{ med.company }}</td>
+                                                <td>{{ med.side_effects }}</td>
+                                                <td>{{ med.expiry_date }}</td>>
+                                            </tr>
+                                            {% endfor %}
+                                        </tfoot>
+                                        <tbody>
+                                            
+                                        </tbody>
+                                       </table>  
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- Row -->
+{% endblock %}

@@ -1,0 +1,71 @@
+
+{% extends 'home/basic.html' %}
+
+{% load static %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+
+
+
+{% block js %}
+<script>
+    
+</script>
+
+        
+{% endblock %}
+
+
+{% block body %}
+
+
+
+            <div class="page-inner">
+                <div class="page-title">
+                    <h3>System Settings </h3>
+                    <div class="page-breadcrumb">
+                        <ol class="breadcrumb">
+                            <li><a href="index.html">Home</a></li>
+                            <li class="active">Settings</li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <div id="main-wrapper">
+                    <div class="row">
+                        <div class="col-md-10 center">
+                            <div class="panel-body">
+                                
+                                <form class="m-t-md" method="post">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label for="system_name" class="col-sm-5 control-label">System Name</label>
+                                        {{ form.name | add_class:"css_class" | attr:"placeholder:System Name" }}
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="system_title" class="col-sm-5 control-label">Title</label>
+                                        {{ form.title | add_class:"css_class" | attr:"placeholder:Title" }}
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="system_address" class="col-sm-5 control-label">Address</label>
+                                        {{ form.address | add_class:"css_class" | attr:"placeholder:Address" }}
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="system_phone" class="col-sm-5 control-label">Phone Number</label>
+                                        {{ form.phone_number | add_class:"css_class" | attr:"placeholder:Phone Number" }}
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="system_email" class="col-sm-5 control-label">Pharmacy Email</label>
+                                        {{ form.email | add_class:"css_class" | attr:"placeholder:Email" }}
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="system_currency" class="col-sm-5 control-label">Currency</label>
+                                        {{ form.currency | add_class:"css_class" | attr:"placeholder:Currency" }}
+                                    </div>
+                                    <button type="submit" id="system_submit" class="btn btn-success btn-block m-t-xs">Submit</button>
+                                </form>
+                            </div>
+                        </div>                        
+                    </div>
+                </div>
+{% endblock %}
