@@ -29,9 +29,9 @@ config.read(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.ini
 SECRET_KEY = config["SECRET"]["SECRET_KEY"] +"%("+config["SECRET"]["SECRET_KEY2"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["pharmacymgt.herokuapp.com", "localhost", "127.0.0.1"]
 
 LOGIN_REDIRECT_URL = '/home/'
 LOGIN_URL = '/home/login/'
