@@ -26,7 +26,7 @@ config.read(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.ini
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config["SECRET"]["SECRET_KEY"] +"%("+config["SECRET"]["SECRET_KEY2"]
+SECRET_KEY = "45f)^7_ksk8s_u$wy!)&+1q4-i12$duwmir%(#84deut_xq^&m9"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
