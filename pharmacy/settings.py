@@ -89,8 +89,13 @@ WSGI_APPLICATION = 'pharmacy.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': 'd9q1vtv2flabug',
+        'USER': 'rzypddsxaybzpv',
+        'PASSWORD': '718334e419203fc06dab21daffb8a29c2c04e60fa9093cb8ec3f29e0e4c91230',
+        'HOST': 'ec2-99-81-177-233.eu-west-1.compute.amazonaws.com',
+        'PORT': '5432',
     }
 }
 
